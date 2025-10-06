@@ -24,4 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+use App\Http\Controllers\TwoFactorController;
+Route::get('/verify', [TwoFactorController::class, 'index'])->name('verify.index');
+Route::post('/verify', [TwoFactorController::class, 'store'])->name('verify.store');
+
 require __DIR__.'/auth.php';

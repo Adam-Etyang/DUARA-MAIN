@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->string('password'); // use hashed in model
                 $table->string('year_of_study')->nullable();
                 $table->string('major')->nullable();
-                $table->string('profile_picture')->nullable();
+                $table->string('profile_picture')->nullable();                
                 $table->timestamps();
             });
         }        
