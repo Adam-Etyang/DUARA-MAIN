@@ -77,5 +77,8 @@ Fixed all the database issues, using mysql-client instead of MariaDB, also made 
 
 TODO: Start working on core classes and auth
 
+## 6th oct
+- started on the main models and auth
+
 
 
