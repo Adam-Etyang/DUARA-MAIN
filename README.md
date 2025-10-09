@@ -68,3 +68,7 @@ TODO: Start working on core classes and auth
 ## 6th oct
 - started on the main models and auth
 - Work on registeration page...its broken
+
+## 9th oct
+- Finished up on auth stuff everything looks okay and seems to be working
+
