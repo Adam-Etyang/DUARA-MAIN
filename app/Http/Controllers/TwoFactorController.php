@@ -35,7 +35,6 @@ class TwoFactorController extends Controller
 
         $student->email_verified_at = now();
         $student->resetTwoFactorCode();
-        Auth::login($student);
         session()->forget('user_id');
 
         return redirect()->route('dashboard');

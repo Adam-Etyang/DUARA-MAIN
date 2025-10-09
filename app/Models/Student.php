@@ -12,12 +12,17 @@ class Student extends Authenticatable
     use Notifiable;
     protected $table = 'students';
     protected $primaryKey = 'student_id';
-    
+
     protected $fillable = [
         'name', 'email', 'password','two_factor_code', 'two_factor_expires_at'
     ];
+    protected $casts = [
+        'two_factor_expires_at' => 'datetime',
+        'email_verified_at'     => 'datetime',
+    ];
+
     protected $dates = ['two_factor_expires_at','email_verified_at'];
-    
+
     public function generateTwoFactorCode()
     {
         $this->timestamps = false;
@@ -32,8 +37,8 @@ class Student extends Authenticatable
         $this->two_factor_expires_at = null;
         $this->save();
     }
-    
-    
-    
+
+
+
     //
 }
