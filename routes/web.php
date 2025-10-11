@@ -23,6 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::middleware(['duara.auth'])->group(function () {
+    Route::resource('clubs', Clubcontroller::class);
+    Route::resource('events', EventController::class);
+});
 
 use App\Http\Controllers\TwoFactorController;
 Route::get('/verify', [TwoFactorController::class, 'index'])->name('verify.index');
