@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\EventRegistrationController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ClubController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -23,9 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::middleware(['duara.auth'])->group(function () {
-    Route::resource('clubs', Clubcontroller::class);
+
+Route::middleware(['auth','verified'])->group(function () {
+    Route::resource('clubs', ClubController::class);
     Route::resource('events', EventController::class);
+
+    Route::post('/clubs/join',[MembershipController::class,'store'])->name('clubs.join');
+    Route::delete('/clubs/{id}/leave',[MembershipController::class, 'destroy'])->name('clubs.leave');
+
+    Route::post('/events/register',[EventRegistrationController::class,'store'])->name('events.register');
+    Route::delete('/events/{id}/unregister',[EventRegistrationController::class,'destroy'])->name('events.unregister');
 });
 
 use App\Http\Controllers\TwoFactorController;
