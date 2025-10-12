@@ -82,3 +82,5 @@ Event registration
 Resource requests
 
 
+13th -> TODO fix routing for login and register on the landing page
+
