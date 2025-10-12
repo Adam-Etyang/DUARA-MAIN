@@ -14,7 +14,6 @@ class ClubController extends Controller
     {
         $clubs = Club::all();
         return inertia('Clubs/Index', ['clubs' => $clubs]);
-
     }
 
     /**
@@ -31,14 +30,16 @@ class ClubController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-        'name' => 'required | string | max:255',
-        'description' => 'nullable|string',
+            'name' => 'required | string | max:255',
+            'description' => 'nullable|string',
         ]);
+
         Club::create([
-        'name' => validated['name'],
-        'description' => validated['description'],
-        'created_by' => auth()->id(),
+            'name' => validated['name'],
+            'description' => validated['description'],
+            'created_by' => auth()->id(),
         ]);
+
         return redirect()->route('clubs.index')->with('success', 'Club created successfully');
     }
 

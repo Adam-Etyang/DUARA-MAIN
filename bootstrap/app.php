@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectifAuthenticated;
+use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\DuaraAuthenticate;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,8 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
         ]);
 
         $middleware->web(append: [
@@ -24,11 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
-            'guest' => \App\Http\Middleware\RedirectifAuthenticated::class,
-            'verified' => \Illumuinate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-            'duara.auth' => \App\Http\Middleware\DuaraAuthenticate::class,
+            'auth' => Authenticate::class,
+            'guest' => RedirectifAuthenticated::class,
+            //'verified' => EnsureEmailIsVerified::class,
+            'duara.auth' => DuaraAuthenticate::class,
 
         ]);
     })

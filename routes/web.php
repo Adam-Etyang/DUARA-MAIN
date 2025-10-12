@@ -3,6 +3,7 @@
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,19 +26,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
     Route::resource('clubs', ClubController::class);
     Route::resource('events', EventController::class);
 
-    Route::post('/clubs/join',[MembershipController::class,'store'])->name('clubs.join');
-    Route::delete('/clubs/{id}/leave',[MembershipController::class, 'destroy'])->name('clubs.leave');
+    Route::post('/clubs/join', [MembershipController::class, 'store'])->name('clubs.join');
+    Route::delete('/clubs/{id}/leave', [MembershipController::class, 'destroy'])->name('clubs.leave');
 
-    Route::post('/events/register',[EventRegistrationController::class,'store'])->name('events.register');
-    Route::delete('/events/{id}/unregister',[EventRegistrationController::class,'destroy'])->name('events.unregister');
+    Route::post('/events/register', [EventRegistrationController::class, 'store'])->name('events.register');
+    Route::delete('/events/{id}/unregister', [EventRegistrationController::class, 'destroy'])->name('events.unregister');
 });
 
 use App\Http\Controllers\TwoFactorController;
+
 Route::get('/verify', [TwoFactorController::class, 'index'])->name('verify.index');
 Route::post('/verify', [TwoFactorController::class, 'store'])->name('verify.store');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
