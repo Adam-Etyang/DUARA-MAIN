@@ -11,7 +11,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ClubController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
