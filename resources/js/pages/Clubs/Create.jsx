@@ -40,8 +40,8 @@ export default function Create() {
                     />
                 </div>
 
-                <Button disabled={processing} type="submit">
-                    {processing ? "Saving…" : "Create Club"}
+                <Button disabled={process} type="submit">
+                    {process ? "Saving…" : "Create Club"}
                 </Button>
             </form>
         </div>
