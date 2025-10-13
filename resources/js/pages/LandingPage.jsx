@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, Calendar, Search, BarChart3, CheckCircle } from 'lucide-react';
 
+
 export default function LandingPage() {
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-black">

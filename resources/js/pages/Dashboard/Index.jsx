@@ -1,84 +1,263 @@
 import { Link, usePage } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Users, Calendar, Clock, MapPin, Plus, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function Dashboard() {
-    const { clubs, events, flash } = usePage().props;
+    const { clubs, events, myClubs, allClubs, upcomingEvents, flash } = usePage().props;
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Filter clubs based on search
+    const filteredClubs = allClubs?.filter(club =>
+        club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        club.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
 
     return (
-        <main className="max-w-5xl mx-auto py-10 space-y-10">
-            <h1 className="text-3xl font-bold mb-6">Welcome to Duara Dashboard</h1>
-
-            {flash?.success && (
-                <div className="bg-green-100 text-green-700 p-2 rounded">
-                    {flash.success}
-                </div>
-            )}
-
-            {/* Clubs Section */}
-            <section>
-                <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-semibold">Your Clubs</h2>
-                    <Link href="/clubs/create">
-                        <Button>Create Club</Button>
+        <main className="min-h-screen bg-white dark:bg-black">
+            <div className="max-w-7xl mx-auto px-6 py-10 space-y-8">
+                {/* Header */}
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h1 className="text-4xl font-bold text-black dark:text-white">Dashboard</h1>
+                        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your clubs and discover new opportunities</p>
+                    </div>
+                    <Link href="/clubs/request">
+                        <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Request New Club
+                        </Button>
                     </Link>
                 </div>
 
-                {clubs.length === 0 ? (
-                    <p className="mt-4 text-gray-600">No clubs created yet.</p>
-                ) : (
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        {clubs.map((club) => (
-                            <li
-                                key={club.club_id}
-                                className="p-4 border rounded-md shadow hover:bg-gray-50"
-                            >
-                                <p className="font-semibold text-lg">{club.name}</p>
-                                <p className="text-gray-600 text-sm">{club.description}</p>
-                                <Link
-                                    href={`/clubs/${club.club_id}/edit`}
-                                    className="text-blue-500 underline text-sm"
-                                >
-                                    Edit
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                {/* Flash Messages */}
+                {flash?.success && (
+                    <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-black dark:border-white text-black dark:text-white p-4 rounded">
+                        {flash.success}
+                    </div>
                 )}
-            </section>
 
-            {/* Events Section */}
-            <section>
-                <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-semibold">Your Events</h2>
-                    <Link href="/events/create">
-                        <Button>Create Event</Button>
-                    </Link>
-                </div>
+                {/* Main Content Tabs */}
+                <Tabs defaultValue="my-clubs" className="space-y-6">
+                    <TabsList className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                        <TabsTrigger value="my-clubs" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                            My Clubs
+                        </TabsTrigger>
+                        <TabsTrigger value="explore" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                            Explore Clubs
+                        </TabsTrigger>
+                        <TabsTrigger value="events" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                            Upcoming Events
+                        </TabsTrigger>
+                    </TabsList>
 
-                {events.length === 0 ? (
-                    <p className="mt-4 text-gray-600">No events yet.</p>
-                ) : (
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        {events.map((event) => (
-                            <li
-                                key={event.event_id}
-                                className="p-4 border rounded-md shadow hover:bg-gray-50"
-                            >
-                                <p className="font-semibold text-lg">{event.title}</p>
-                                <p className="text-gray-600 text-sm">
-                                    {event.club?.name || "Independent event"}
-                                </p>
-                                <Link
-                                    href={`/events/${event.event_id}/edit`}
-                                    className="text-blue-500 underline text-sm"
-                                >
-                                    Edit
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </section>
+                    {/* My Clubs Tab */}
+                    <TabsContent value="my-clubs" className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-2xl font-bold text-black dark:text-white">Your Clubs</h2>
+                            <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                {myClubs?.length || clubs?.length || 0} Clubs
+                            </Badge>
+                        </div>
+
+                        {(!myClubs || myClubs.length === 0) && (!clubs || clubs.length === 0) ? (
+                            <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950">
+                                <CardContent className="flex flex-col items-center justify-center py-12">
+                                    <Users className="w-12 h-12 text-gray-400 mb-4" />
+                                    <p className="text-gray-600 dark:text-gray-400 text-center mb-4">
+                                        You haven't joined any clubs yet.
+                                    </p>
+                                    <Link href="#explore">
+                                        <Button variant="outline" className="border-black text-black hover:bg-gray-100 dark:border-white dark:text-white dark:hover:bg-gray-900">
+                                            Explore Clubs
+                                        </Button>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {(myClubs || clubs)?.map((club) => (
+                                    <Card key={club.club_id} className="border-2 border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-black">
+                                        <CardHeader>
+                                            <CardTitle className="text-black dark:text-white">{club.name}</CardTitle>
+                                            <CardDescription className="text-gray-600 dark:text-gray-400">
+                                                {club.description || "No description available"}
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="space-y-3">
+                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                                <Users className="w-4 h-4" />
+                                                <span>{club.members_count || 0} members</span>
+                                            </div>
+                                            {club.next_event && (
+                                                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                                    <Calendar className="w-4 h-4" />
+                                                    <span>Next event: {club.next_event}</span>
+                                                </div>
+                                            )}
+                                            <div className="flex gap-2 pt-2">
+                                                <Link href={`/clubs/${club.club_id}`} className="flex-1">
+                                                    <Button variant="outline" className="w-full border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+                                                        View Details
+                                                    </Button>
+                                                </Link>
+                                                {club.is_admin && (
+                                                    <Link href={`/clubs/${club.club_id}/edit`}>
+                                                        <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                                                            Manage
+                                                        </Button>
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </TabsContent>
+
+                    {/* Explore Clubs Tab */}
+                    <TabsContent value="explore" className="space-y-6">
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-black dark:text-white">Discover Clubs</h2>
+
+                            {/* Search Bar */}
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Search clubs by name or description..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-black text-black dark:text-white placeholder-gray-400 focus:outline-none focus:border-black dark:focus:border-white"
+                                />
+                            </div>
+                        </div>
+
+                        {filteredClubs.length === 0 ? (
+                            <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950">
+                                <CardContent className="flex flex-col items-center justify-center py-12">
+                                    <Search className="w-12 h-12 text-gray-400 mb-4" />
+                                    <p className="text-gray-600 dark:text-gray-400 text-center">
+                                        {searchQuery ? "No clubs match your search." : "No clubs available to explore."}
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {filteredClubs.map((club) => (
+                                    <Card key={club.club_id} className="border-2 border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-black">
+                                        <CardHeader>
+                                            <div className="flex justify-between items-start">
+                                                <CardTitle className="text-black dark:text-white">{club.name}</CardTitle>
+                                                {club.is_member && (
+                                                    <Badge className="bg-black text-white dark:bg-white dark:text-black">
+                                                        Joined
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                            <CardDescription className="text-gray-600 dark:text-gray-400">
+                                                {club.description || "No description available"}
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="space-y-3">
+                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                                <Users className="w-4 h-4" />
+                                                <span>{club.members_count || 0} members</span>
+                                            </div>
+                                            {club.category && (
+                                                <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                                    {club.category}
+                                                </Badge>
+                                            )}
+                                            <Link href={`/clubs/${club.club_id}`} className="block pt-2">
+                                                <Button className="w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                                                    {club.is_member ? "View Club" : "Join Club"}
+                                                </Button>
+                                            </Link>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </TabsContent>
+
+                    {/* Upcoming Events Tab */}
+                    <TabsContent value="events" className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-2xl font-bold text-black dark:text-white">Upcoming Events</h2>
+                            <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                {upcomingEvents?.length || events?.length || 0} Events
+                            </Badge>
+                        </div>
+
+                        {(!upcomingEvents || upcomingEvents.length === 0) && (!events || events.length === 0) ? (
+                            <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950">
+                                <CardContent className="flex flex-col items-center justify-center py-12">
+                                    <Calendar className="w-12 h-12 text-gray-400 mb-4" />
+                                    <p className="text-gray-600 dark:text-gray-400 text-center">
+                                        No upcoming events at the moment.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="space-y-4">
+                                {(upcomingEvents || events)?.map((event) => (
+                                    <Card key={event.event_id} className="border-2 border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-black">
+                                        <CardContent className="p-6">
+                                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                                <div className="flex-1 space-y-2">
+                                                    <h3 className="text-xl font-bold text-black dark:text-white">{event.title}</h3>
+                                                    <p className="text-gray-600 dark:text-gray-400">
+                                                        {event.club?.name || event.club_name || "Independent event"}
+                                                    </p>
+                                                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                                        {event.date && (
+                                                            <div className="flex items-center gap-2">
+                                                                <Calendar className="w-4 h-4" />
+                                                                <span>{new Date(event.date).toLocaleDateString()}</span>
+                                                            </div>
+                                                        )}
+                                                        {event.time && (
+                                                            <div className="flex items-center gap-2">
+                                                                <Clock className="w-4 h-4" />
+                                                                <span>{event.time}</span>
+                                                            </div>
+                                                        )}
+                                                        {event.location && (
+                                                            <div className="flex items-center gap-2">
+                                                                <MapPin className="w-4 h-4" />
+                                                                <span>{event.location}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Link href={`/events/${event.event_id}`}>
+                                                        <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+                                                            View Details
+                                                        </Button>
+                                                    </Link>
+                                                    {!event.is_registered && (
+                                                        <Link href={`/events/${event.event_id}/register`}>
+                                                            <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                                                                RSVP
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </TabsContent>
+                </Tabs>
+            </div>
         </main>
     );
 }
