@@ -25,7 +25,7 @@ export default function Dashboard() {
                         <h1 className="text-4xl font-bold text-black dark:text-white">Dashboard</h1>
                         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your clubs and discover new opportunities</p>
                     </div>
-                    <Link href="/clubs/request">
+                    <Link href="../Clubs/Create">
                         <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
                             <Plus className="w-4 h-4 mr-2" />
                             Request New Club
