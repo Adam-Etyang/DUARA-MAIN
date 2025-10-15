@@ -70,8 +70,7 @@ TODO: Start working on core classes and auth
 - Work on registeration page...its broken
 
 ## 9th oct
-- Finished up on auth stuff everything looks okay and s
-seems to be working
+- Finished up on auth stuff everything looks okay and seems to be working
 
 ## 11th oct
 - CRUD functionality
