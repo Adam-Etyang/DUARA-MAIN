@@ -21,8 +21,6 @@ class StudentFactory extends Factory
         'name'              => $this->faker->name(),
         'email'             => $this->faker->unique()->safeEmail(),
         'password'          => Hash::make('password'),   // universal test password
-        'email_verified_at' => now(),
-        'role'              => 'student',               // optional if you track roles
         'created_at'        => now(),
         'updated_at'        => now(),
         ];

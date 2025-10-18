@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Club;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +18,9 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            StudentSeeder::class
+            StudentSeeder::class,
+            ClubSeeder::class,
+            EventSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',
