@@ -31,7 +31,7 @@ class MembershipController extends Controller
     {
         $student = Auth::user();
         $student->clubs()->detach($clubId);
-        return redirect()->back()->with('success', 'You have left the club!');
+        return redirect()->route('dashboard')->with('success', 'You have left the club!');
     }
     
     

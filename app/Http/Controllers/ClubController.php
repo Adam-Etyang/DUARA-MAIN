@@ -48,7 +48,21 @@ class ClubController extends Controller
      */
     public function show(Club $club)
     {
-        return inertia('Clubs/Show', ['club' => $club]);
+        $club->load([
+        'members:student_id,name,email',
+            'events' => function ($q) {
+                $q->orderBy('start_time', 'desc');
+            },
+            ]);
+        $student = auth()->user();
+        
+        $isMember = $club->members->contains($student->student_id);
+        $isAdmin = $club->created_by === $student->student_id;
+
+        return inertia('Clubs/Show',
+        ['club' => $club,
+                'isMember'=>$isMember,
+                'isAdmin'=>$isAdmin]);
     }
 
     /**

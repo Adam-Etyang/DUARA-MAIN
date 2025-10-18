@@ -43,8 +43,9 @@ class Student extends Authenticatable
     }
     public function clubs()
     {
-        return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id') 
-        -> withTimestamps();
+        return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
+        ->withPivot('role','status')
+        ->withTimestamps();
         
     }
 
