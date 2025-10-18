@@ -1,10 +1,13 @@
 import { Link, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, Clock, MapPin, Plus, Search } from "lucide-react";
 import { useState } from "react";
+
 
 export default function Dashboard() {
     const { clubs, events, myClubs, allClubs, upcomingEvents, flash } = usePage().props;
@@ -173,11 +176,24 @@ export default function Dashboard() {
                                                     {club.category}
                                                 </Badge>
                                             )}
-                                            <Link href={`/clubs/${club.club_id}`} className="block pt-2">
-                                                <Button className="w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-                                                    {club.is_member ? "View Club" : "Join Club"}
-                                                </Button>
-                                            </Link>
+                                            
+                                            <div className="block pt-2">
+                                              <Button
+                                                onClick={() => {
+                                                  if (!club.is_member) {
+                                                    // 🔹 Perform the join via Inertia POST
+                                                    router.post(route("clubs.join"), { club_id: club.club_id });
+                                                  } else {
+                                                    // 🔹 If already joined, go to club details
+                                                    router.visit(`/clubs/${club.club_id}`);
+                                                  }
+                                                }}
+                                                className="w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                              >
+                                                {club.is_member ? "View Club" : "Join Club"}
+                                              </Button>
+                                            </div>
+                                            
                                         </CardContent>
                                     </Card>
                                 ))}
