@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { usePage, router, Link } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import EventModal from "@/Components/EventsModal";
 import { Users, Calendar, Plus, ArrowLeft, MapPin, Clock, Mail, User } from "lucide-react";
 
 export default function ClubDashboard() {
   const { club, isMember, isAdmin, flash } = usePage().props;
+  
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showEventModal, setShowEventModal] = useState(false);
 
   const handleJoin = () => {
     router.post(route("clubs.join"), { club_id: club.club_id });
@@ -131,7 +136,7 @@ export default function ClubDashboard() {
                 ) : (
                   <div className="space-y-3">
                     {club.members.map((member, index) => (
-                      <div key={member.id}>
+                      <div key={member.student_id}>
                         {index > 0 && <Separator className="bg-gray-200 dark:bg-gray-800" />}
                         <div className="flex items-center gap-3 py-2">
                           <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
@@ -227,15 +232,16 @@ export default function ClubDashboard() {
                                 )}
                               </div>
                             </div>
-                            <Link href={`/events/${event.event_id}`}>
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
-                              >
-                                View
-                              </Button>
-                            </Link>
+                            <Button
+                              variant="outline"
+                              className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                              onClick={() => {
+                                setSelectedEvent(event);
+                                setShowEventModal(true);
+                              }}
+                            >
+                              View
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -283,36 +289,14 @@ export default function ClubDashboard() {
               </CardContent>
             </Card>
 
-            {isMember && (
-              <Card className="border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
-                <CardHeader>
-                  <CardTitle className="text-black dark:text-white text-sm">Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <Link href={`/clubs/${club.club_id}/events`} className="block">
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-white dark:hover:bg-black"
-                    >
-                      <Calendar className="w-4 h-4 mr-2" />
-                      View All Events
-                    </Button>
-                  </Link>
-                  <Link href={`/clubs/${club.club_id}/members`} className="block">
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-white dark:hover:bg-black"
-                    >
-                      <Users className="w-4 h-4 mr-2" />
-                      View All Members
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
       </div>
+      <EventModal
+        open={showEventModal}
+        onOpenChange={setShowEventModal}
+        event={selectedEvent}
+      />
     </main>
   );
 }

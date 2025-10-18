@@ -257,13 +257,28 @@ export default function Dashboard() {
                                                             View Details
                                                         </Button>
                                                     </Link>
-                                                    {!event.is_registered && (
-                                                        <Link href={`/events/${event.event_id}/register`}>
-                                                            <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-                                                                RSVP
-                                                            </Button>
-                                                        </Link>
+                                                    {!event.is_registered ? (
+                                                      <Button
+                                                        onClick={() =>
+                                                          router.post(route("events.register"), { event_id: event.event_id })
+                                                        }
+                                                        className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                                      >
+                                                        RSVP
+                                                      </Button>
+                                                    ) : (
+                                                      <Button
+                                                        onClick={() =>
+                                                          router.delete(route("events.unregister", event.event_id))
+                                                        }
+                                                        variant="outline"
+                                                        className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                                                      >
+                                                        Cancel RSVP
+                                                      </Button>
                                                     )}
+                                                    
+                                                    
                                                 </div>
                                             </div>
                                         </CardContent>
