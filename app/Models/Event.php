@@ -31,4 +31,9 @@ class Event extends Model
     {
         return $this->belongsTo(Student::class, 'created_by');
     }
+    public function atendees()
+    {
+        return $this->belongsToMany(Student::class, 'event_registrations', 'event_id', 'student_id')
+            ->withTimestamps();
+    }
 }

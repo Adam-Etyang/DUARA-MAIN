@@ -48,6 +48,11 @@ class Student extends Authenticatable
         ->withTimestamps();
         
     }
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_registrations', 'student_id', 'event_id')
+        ->withTimestamps();
+    }
 
 
 
