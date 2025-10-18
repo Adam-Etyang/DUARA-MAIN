@@ -83,3 +83,8 @@ Resource requests
 
 13th -> TODO fix routing for login and register on the landing page
 
+18th TODO:create Tab for events a user is attending, finish up on the club dashboard(None of the modal pages render)
+        Create analytics dashboard for student
+        create views for admins
+
+
