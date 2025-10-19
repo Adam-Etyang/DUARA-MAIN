@@ -9,6 +9,7 @@ use App\Models\Student;
 
 class DashboardController extends Controller
 {
+    # method to display dashboard
     public function index()
     {
         $student = Student::find(auth()->id());
