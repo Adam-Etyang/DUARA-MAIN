@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Users, Calendar, Clock, MapPin, Plus, Search } from "lucide-react";
 import { useState } from "react";
 
@@ -12,6 +18,8 @@ import { useState } from "react";
 export default function Dashboard() {
     const { clubs, events, myClubs, allClubs, upcomingEvents, flash } = usePage().props;
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [showEventModal, setShowEventModal] = useState(false);
 
     // Filter clubs based on search
     const filteredClubs = allClubs?.filter(club =>
@@ -101,6 +109,7 @@ export default function Dashboard() {
                                                     <span>Next event: {club.next_event}</span>
                                                 </div>
                                             )}
+                                            
                                             <div className="flex gap-2 pt-2">
                                                 <Link href={`/clubs/${club.club_id}`} className="flex-1">
                                                     <Button variant="outline" className="w-full border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
@@ -115,6 +124,7 @@ export default function Dashboard() {
                                                     </Link>
                                                 )}
                                             </div>
+                                            
                                         </CardContent>
                                     </Card>
                                 ))}
@@ -251,12 +261,100 @@ export default function Dashboard() {
                                                         )}
                                                     </div>
                                                 </div>
+                                                
                                                 <div className="flex gap-2">
-                                                    <Link href={`/events/${event.event_id}`}>
-                                                        <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
-                                                            View Details
-                                                        </Button>
-                                                    </Link>
+                                                    <Dialog open={showEventModal && selectedEvent?.event_id === event.event_id}
+                                                            onOpenChange={(open) => {
+                                                              setShowEventModal(open);
+                                                              if (!open) setSelectedEvent(null);
+                                                            }}>
+                                                      <Button
+                                                        variant="outline"
+                                                        className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                                                        onClick={() => {
+                                                          setSelectedEvent(event);
+                                                          setShowEventModal(true);
+                                                        }}
+                                                      >
+                                                        View Details
+                                                      </Button>
+                                                    
+                                                      {/* Event Details Modal */}
+                                                      {selectedEvent && (
+                                                        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+                                                          <DialogHeader>
+                                                            <DialogTitle className="text-2xl font-bold text-black dark:text-white">
+                                                              {selectedEvent.title}
+                                                            </DialogTitle>
+                                                            <p className="text-gray-600 dark:text-gray-400 mt-1">
+                                                              {selectedEvent.club?.name || "Independent event"}
+                                                            </p>
+                                                          </DialogHeader>
+                                                    
+                                                          <div className="mt-6 space-y-4 text-gray-800 dark:text-gray-200">
+                                                            <div className="flex flex-wrap gap-6">
+                                                              <div className="flex items-center gap-2">
+                                                                <Calendar className="w-5 h-5" />
+                                                                <span>
+                                                                  {new Date(selectedEvent.start_time).toLocaleDateString()}
+                                                                </span>
+                                                              </div>
+                                                              <div className="flex items-center gap-2">
+                                                                <Clock className="w-5 h-5" />
+                                                                <span>
+                                                                  {new Date(selectedEvent.start_time).toLocaleTimeString([], {
+                                                                    hour: "2-digit",
+                                                                    minute: "2-digit",
+                                                                  })}{" "}
+                                                                  –{" "}
+                                                                  {new Date(selectedEvent.end_time).toLocaleTimeString([], {
+                                                                    hour: "2-digit",
+                                                                    minute: "2-digit",
+                                                                  })}
+                                                                </span>
+                                                              </div>
+                                                            </div>
+                                                    
+                                                            {selectedEvent.location && (
+                                                              <div className="flex items-center gap-2">
+                                                                <MapPin className="w-5 h-5" />
+                                                                <span>{selectedEvent.location}</span>
+                                                              </div>
+                                                            )}
+                                                    
+                                                            <div>
+                                                              <h4 className="font-semibold mb-1">About this Event</h4>
+                                                              <p>{selectedEvent.description || "No description available."}</p>
+                                                            </div>
+                                                          </div>
+                                                    
+                                                          <div className="flex justify-between items-center pt-6">
+                                                            {selectedEvent.is_registered ? (
+                                                              <Button
+                                                                onClick={() =>
+                                                                  router.delete(route("events.unregister", selectedEvent.event_id))
+                                                                }
+                                                                variant="outline"
+                                                                className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                                                              >
+                                                                Cancel RSVP
+                                                              </Button>
+                                                            ) : (
+                                                              <Button
+                                                                onClick={() =>
+                                                                  router.post(route("events.register"), {
+                                                                    event_id: selectedEvent.event_id,
+                                                                  })
+                                                                }
+                                                                className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                                              >
+                                                                RSVP
+                                                              </Button>
+                                                            )}
+                                                          </div>
+                                                        </DialogContent>
+                                                      )}
+                                                    </Dialog>
                                                     {!event.is_registered ? (
                                                       <Button
                                                         onClick={() =>
@@ -280,9 +378,11 @@ export default function Dashboard() {
                                                     
                                                     
                                                 </div>
+                                                
                                             </div>
                                         </CardContent>
                                     </Card>
+                                    
                                 ))}
                             </div>
                         )}

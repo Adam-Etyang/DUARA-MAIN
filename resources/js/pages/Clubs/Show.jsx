@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import EventModal from "@/Components/EventsModal";
-import { Users, Calendar, Plus, ArrowLeft, MapPin, Clock, Mail, User } from "lucide-react";
+import { Users, Calendar, Plus, ArrowLeft, MapPin, Clock, Mail, User,Megaphone } from "lucide-react";
 
 export default function ClubDashboard() {
   const { club, isMember, isAdmin, flash } = usePage().props;
@@ -284,6 +284,92 @@ export default function ClubDashboard() {
                         {new Date(club.founded_date).toLocaleDateString()}
                       </p>
                     </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+            
+            {/* Announcements Section */}
+            <Card className="border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-black dark:text-white">
+                  <Megaphone className="w-5 h-5" />
+                  Announcements
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-400">
+                  Latest updates from the club
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {!club.announcements || club.announcements.length === 0 ? (
+                  <div className="text-center py-6">
+                    <Megaphone className="w-10 h-10 text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">No announcements yet</p>
+                    {isAdmin && (
+                      <Button
+                        onClick={() => router.visit(`/clubs/${club.club_id}/announcements/create`)}
+                        variant="outline"
+                        className="mt-3 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                        size="sm"
+                      >
+                        <Plus className="w-3 h-3 mr-2" />
+                        Create
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {club.announcements.slice(0, 5).map((announcement, index) => (
+                      <div key={announcement.id}>
+                        {index > 0 && <Separator className="bg-gray-200 dark:bg-gray-800" />}
+                        <div className="py-2 space-y-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="text-sm font-medium text-black dark:text-white leading-snug">
+                              {announcement.title}
+                            </p>
+                            {announcement.is_pinned && (
+                              <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-xs">
+                                Pinned
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                            {announcement.message}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-500">
+                            {new Date(announcement.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                    {club.announcements.length > 5 && (
+                      <>
+                        <Separator className="bg-gray-200 dark:bg-gray-800" />
+                        <Link href={`/clubs/${club.club_id}/announcements`} className="block">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="w-full text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                          >
+                            View all announcements
+                          </Button>
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                )}
+                {isAdmin && club.announcements && club.announcements.length > 0 && (
+                  <>
+                    <Separator className="bg-gray-200 dark:bg-gray-800 mt-3" />
+                    <Button
+                      onClick={() => router.visit(`/clubs/${club.club_id}/announcements/create`)}
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-3 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                    >
+                      <Plus className="w-3 h-3 mr-2" />
+                      New Announcement
+                    </Button>
                   </>
                 )}
               </CardContent>
