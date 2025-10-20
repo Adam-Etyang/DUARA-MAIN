@@ -53,6 +53,34 @@ class Student extends Authenticatable
         return $this->belongsToMany(Event::class, 'event_registrations', 'student_id', 'event_id')
         ->withTimestamps();
     }
+    public function adminRecords()
+    {
+        return $this->hasMany(Admin::class, 'student_id', 'student_id'); 
+    }
+    public function isSchoolAdmin()
+    {
+        return $this->adminRecords()
+                    ->where('admin_type', 'school_admin')
+                    ->exists(); 
+    }
+    public function isClubAdmin($clubId = null)
+    {
+        $query = $this->adminRecords()
+                      ->where('admin_type', 'club_admin');
+        
+        if ($clubId) {
+            $query->where('club_id', $clubId);
+        }
+        
+        return $query->exists(); 
+    }
+    public function clubsWhereAdmin()
+    {
+        return $this->adminRecords()
+                    ->where('admin_type', 'club_admin')
+                    ->pluck('club_id')
+                    ->toArray(); 
+    }
 
 
 
