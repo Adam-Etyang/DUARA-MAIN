@@ -70,8 +70,7 @@ TODO: Start working on core classes and auth
 - Work on registeration page...its broken
 
 ## 9th oct
-- Finished up on auth stuff everything looks okay and s
-seems to be working
+- Finished up on auth stuff everything looks okay and seems to be working
 
 ## 11th oct
 - CRUD functionality
@@ -83,4 +82,9 @@ Resource requests
 
 
 13th -> TODO fix routing for login and register on the landing page
+
+18th TODO:create Tab for events a user is attending, finish up on the club dashboard(None of the modal pages render)
+        Create analytics dashboard for student
+        create views for admins
+
 

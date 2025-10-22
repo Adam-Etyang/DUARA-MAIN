@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('students')) {
+        if (Schema::hasTable('students')) {
             Schema::table('students', function (Blueprint $table) {
                 $table->string('two_factor_code')->nullable();
                 $table->timestamp('two_factor_expires_at')->nullable();

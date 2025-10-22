@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\ClubAdminController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return Inertia::render('LandingPage', [
@@ -39,6 +41,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/events/register', [EventRegistrationController::class, 'store'])->name('events.register');
     Route::delete('/events/{id}/unregister', [EventRegistrationController::class, 'destroy'])->name('events.unregister');
+
+    Route::get('/clubs/{club}/admin', [ClubAdminController::class, 'dashboard'])->name('clubs.admin.dashboard');
+});
+
+Route::middleware(['auth', 'verified', 'is_school_admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard'])
+        ->name('admin.dashboard');
 });
 
 use App\Http\Controllers\TwoFactorController;

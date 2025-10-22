@@ -14,11 +14,11 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        Student::create([
-            'name' => 'Adam Demo',
+        Student::updateOrCreate([
             'email' => 'adam@example.com',
+        ],[
+            'name' => 'Adam Demo',
             'password' => Hash::make('password'),
-            'email_verified_at' => now(),
         ]);
 
         Student::factory()->count(20)->create();

@@ -5,7 +5,7 @@ use App\Http\Middleware\RedirectifAuthenticated;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\DuaraAuthenticate;
-
+use App\Http\Middleware\IsSchoolAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -32,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectifAuthenticated::class,
             //'verified' => EnsureEmailIsVerified::class,
             'duara.auth' => DuaraAuthenticate::class,
+            'is_school_admin' => IsSchoolAdmin::class,
 
         ]);
     })

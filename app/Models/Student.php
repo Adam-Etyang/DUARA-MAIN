@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Club;
 
 class Student extends Authenticatable
 {
@@ -39,6 +40,46 @@ class Student extends Authenticatable
         $this->two_factor_code = null;
         $this->two_factor_expires_at = null;
         $this->save();
+    }
+    public function clubs()
+    {
+        return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
+        ->withPivot('role','status')
+        ->withTimestamps();
+        
+    }
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_registrations', 'student_id', 'event_id')
+        ->withTimestamps();
+    }
+    public function adminRecords()
+    {
+        return $this->hasMany(Admin::class, 'student_id', 'student_id'); 
+    }
+    public function isSchoolAdmin()
+    {
+        return $this->adminRecords()
+                    ->where('admin_type', 'school_admin')
+                    ->exists(); 
+    }
+    public function isClubAdmin($clubId = null)
+    {
+        $query = $this->adminRecords()
+                      ->where('admin_type', 'club_admin');
+        
+        if ($clubId) {
+            $query->where('club_id', $clubId);
+        }
+        
+        return $query->exists(); 
+    }
+    public function clubsWhereAdmin()
+    {
+        return $this->adminRecords()
+                    ->where('admin_type', 'club_admin')
+                    ->pluck('club_id')
+                    ->toArray(); 
     }
 
 
