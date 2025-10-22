@@ -13,52 +13,58 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        
-    
+
+
     }
 
     public function indexClubs()
     {
-        
+
     }
     public function showEvents(Club $club)
     {
-        
+
     }
     public function updateClubStatus(Request $request, Club $club)
     {
-        
+
     }
 
     public function indexEvents()
     {
-        
+
     }
     public function indexUsers()
     {
-        
+
     }
-    public function promoteToSchoolAdmin(Request $request,Student $student)
+    public function promoteToSchoolAdmin(Request $request, Student $student)
     {
-        
+
     }
-    public function indexResourcesRequest(){
-        
+    public function indexResourcesRequest()
+    {
+
     }
 
-    public function updateResourceRequest(Request $request, $requestId){
-        
+    public function updateResourceRequest(Request $request, $requestId)
+    {
+
     }
-    public function indexResource(){
-        
+    public function indexResource()
+    {
+
     }
 
-    public function updateResource(){
-        
+    public function updateResource()
+    {
+
     }
-    public function destroyResource(){
-        
+    public function destroyResource()
+    {
+
     }
+}
 
 
 
