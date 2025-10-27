@@ -11,10 +11,10 @@ use App\Models\Admin;
 
 class AdminController extends Controller
 {
+    //overview of the whole sytem
     public function dashboard()
-    {
-
-
+    {   
+        
     }
 
     public function indexClubs()
