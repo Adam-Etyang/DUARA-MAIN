@@ -43,7 +43,7 @@ class AdminController extends Controller
 
     }
     
-    public function showClubs(Club $club)
+    public function showClub(Club $club)
     {
         return inertia('Admin/Club/Show', [
             'club' => $club->load(['members', 'events', 'admins']),
@@ -53,19 +53,19 @@ class AdminController extends Controller
     public function showEvents(Club $club)
     {
         return inertia('Admin/Club/Events', [
-            'club' => $club->load(['members', 'events', 'admins']),
+            'club' => $club,
+            'events' => $club->events()->withCount('registrations')->get(),
         ]);
     }
     
     public function updateClubStatus(Request $request, Club $club)
     {
-        $request = validate([
-        'status' => 'required|in:active,suspended'
+        $request->validate([
+            'status' => 'required|in:active,inactive'
         ]);
-        $club->update([
-        'status' => $request->status
-        ]);
-        
+
+        $club->update(['status' => $request->status]);
+
         return redirect()->back()->with('success', "Club status updated to {$request->status}.");
     }
 
@@ -73,7 +73,7 @@ class AdminController extends Controller
     {
         return inertia('Admin/Events/Index', [
             'events' => Event::with('club')
-                            ->withCount('participants')
+                            ->withCount('atendees')
                             ->latest()
                             ->paginate(15),
         ]);
@@ -81,10 +81,17 @@ class AdminController extends Controller
     }
     public function indexUsers()
     {
+        $users = Student::with('adminRecords')
+                        ->latest()
+                        ->paginate(20)
+                        ->through(function ($user) {
+                            $user->is_school_admin = $user->isSchoolAdmin();
+                            $user->is_club_admin = $user->isClubAdmin();
+                            return $user;
+                        });
+
         return inertia('Admin/Users/Index', [
-            'users' => User::with('adminRecords')
-                            ->latest()
-                            ->paginate(20),
+            'users' => $users,
         ]);
 
     }
