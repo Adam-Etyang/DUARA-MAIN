@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             ClubSeeder::class,
             EventSeeder::class,
+            AdminSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',
