@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Users, Calendar, Clock, MapPin, Plus, Search } from "lucide-react";
+import { Users, Calendar, Clock, MapPin, Plus, Search, Settings } from "lucide-react";
 import { useState } from "react";
 
 
@@ -32,16 +32,24 @@ export default function Dashboard() {
             <div className="max-w-7xl mx-auto px-6 py-10 space-y-8">
                 {/* Header */}
                 <div className="flex justify-between items-start">
-                    <div>
-                        <h1 className="text-4xl font-bold text-black dark:text-white">Dashboard</h1>
-                        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your clubs and discover new opportunities</p>
-                    </div>
-                    <Link href="../Clubs/Create">
-                        <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-                            <Plus className="w-4 h-4 mr-2" />
-                            Request New Club
+                <div>
+                <h1 className="text-4xl font-bold text-black dark:text-white">Dashboard</h1>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your clubs and discover new opportunities</p>
+                </div>
+                <div className="flex gap-4">
+                <Link href="/account">
+                <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+                    <Settings className="w-4 h-4 mr-2" />
+                        My Account
                         </Button>
-                    </Link>
+                        </Link>
+                        <Link href="../Clubs/Create">
+                            <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                                <Plus className="w-4 h-4 mr-2" />
+                                Request New Club
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Flash Messages */}
