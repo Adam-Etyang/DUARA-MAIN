@@ -34,7 +34,7 @@ class AdminController extends Controller
 
     public function indexClubs()
     {
-        return inertia('Admin/Clubs/Index', [
+        return inertia('Admin/Club/Index', [
             'clubs' => Club::with('members')
                             ->withCount('members')
                             ->latest()
