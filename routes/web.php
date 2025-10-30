@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/account', [ProfileController::class, 'manage'])->name('account.manage');
+    Route::patch('/account/password', [ProfileController::class, 'changePassword'])->name('account.change-password');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
