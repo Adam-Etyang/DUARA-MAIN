@@ -15,7 +15,7 @@ class IsSchoolAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->user()->isSchollAdmin()) {
+        if (!auth()->user()->isSchoolAdmin()) {
             abort(403,'You are not authorised to view this. Admin access required');
         }
         return $next($request);
