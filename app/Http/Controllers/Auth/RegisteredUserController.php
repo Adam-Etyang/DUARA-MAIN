@@ -9,11 +9,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Mail\TwoFactorCodeMail;
 use App\Models\Student;
 
 class RegisteredUserController extends Controller
@@ -47,14 +45,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($student));
 
-        $student->generateTwoFactorCode();
-
-        Mail::to($student->email)->send(
-        new TwoFactorCodeMail($student->two_factor_code));
-
-        session(['user_id' => $student->student_id]);
-
-
-        return redirect()->route('verify.index');
+        return redirect()->route('verification.notice');
     }
 }
