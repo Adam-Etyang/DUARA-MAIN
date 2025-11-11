@@ -1,18 +1,28 @@
 import { useState } from "react";
-import { Head, useForm, Link } from "@inertiajs/react";
+import { Head, useForm, Link, router } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield, ArrowLeft } from "lucide-react";
+import { Shield, ArrowLeft, Mail } from "lucide-react";
 
-export default function VerifyCode() {
+export default function VerifyCode({ status }) {
   const { data, setData, post, processing, errors } = useForm({
     two_factor_code: "",
   });
 
+  const [resending, setResending] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     post("/verify");
+  };
+
+  const handleResend = () => {
+    setResending(true);
+    router.post('/verify/resend', {}, {
+      preserveScroll: true,
+      onFinish: () => setResending(false)
+    });
   };
 
   return (
@@ -25,27 +35,27 @@ export default function VerifyCode() {
             <div className="w-20 h-20 rounded-full bg-black dark:bg-white flex items-center justify-center mb-6">
               <Shield className="w-10 h-10 text-white dark:text-black" />
             </div>
-            <h1 className="text-5xl font-bold text-black dark:text-white">Security First</h1>
+            <h1 className="text-5xl font-bold text-black dark:text-white">Email Verification</h1>
             <p className="text-xl text-gray-600 dark:text-gray-400">
-              We take your account security seriously. Two-factor authentication adds an extra layer of protection to keep your account safe.
+              We've sent a 6-digit verification code to your email. Enter it below to verify your account and get started.
             </p>
             <div className="pt-6 space-y-4">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Check your authenticator app for the 6-digit code
+                  Check your email inbox for the code
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Codes expire after 30 seconds
+                  Code expires in 10 minutes
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Enter the code to access your account
+                  Didn't receive it? You can resend
                 </p>
               </div>
             </div>
@@ -74,9 +84,16 @@ export default function VerifyCode() {
             <div className="space-y-2 text-center lg:text-left">
               <h2 className="text-3xl font-bold text-black dark:text-white">Enter Verification Code</h2>
               <p className="text-gray-600 dark:text-gray-400">
-                Enter the 6-digit code from your authenticator app
+                Check your email for the 6-digit verification code
               </p>
             </div>
+
+            {/* Status Message */}
+            {status && (
+              <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-black dark:border-white text-black dark:text-white p-4 rounded text-sm">
+                {status}
+              </div>
+            )}
 
             {/* Verification Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -106,7 +123,7 @@ export default function VerifyCode() {
               {/* Info Box */}
               <div className="bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <strong className="text-black dark:text-white">Tip:</strong> Open your authenticator app (like Google Authenticator or Authy) to find your current verification code.
+                  <strong className="text-black dark:text-white">Tip:</strong> Check your email inbox for the verification code. The code expires in 10 minutes.
                 </p>
               </div>
 
@@ -131,24 +148,28 @@ export default function VerifyCode() {
 
               {/* Help Section */}
               <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Having trouble?
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Didn't receive the code?
                 </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
-                  <button
-                    type="button"
-                    className="text-sm text-black dark:text-white underline hover:no-underline"
-                    onClick={() => window.location.reload()}
-                  >
-                    Resend code
-                  </button>
-                  <Link
-                    href="/support"
-                    className="text-sm text-black dark:text-white underline hover:no-underline"
-                  >
-                    Contact support
-                  </Link>
-                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleResend}
+                  disabled={resending}
+                  className="border-2 border-gray-200 dark:border-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                >
+                  {resending ? (
+                    <span className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-black dark:border-white border-t-transparent rounded-full animate-spin"></div>
+                      Sending...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      Resend Code
+                    </span>
+                  )}
+                </Button>
               </div>
             </form>
           </div>
