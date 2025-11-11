@@ -1,102 +1,78 @@
-# Duara - Project Management Plan
+# Duara – Project Management Plan
 
-## Project Overview
+## 📘 Overview
 
-**Project Name:** Duara (_"Circle"_ in Kiswahili)
+**Project Name:** Duara (_“Circle”_ in Kiswahili)
 
-### Description
+Duara is a **student club management system** built with **Laravel** to help students easily discover, join, and manage campus clubs.  
+It replaces the scattered manual process with one organized digital platform for both students and club managers.
 
-Duara is a **student club management system** that connects students with campus clubs.  
-It was developed to address the problems the school faces with its current manual, scattered, and inefficient club management system.
-
-By providing one unified platform for both students and club managers, Duara streamlines the process of discovering, joining, and managing clubs.
+---
+## Team
+Developed by:
+- Adam Etyang
+- Hellen Nzisa
+- Dalton Mule
+- Caleb Munene
+- Dwayne Makendi
 
 ---
 
-## Tech Stack
-
-- **Apache24** → Web server
-- **PHP** → Backend
-- **Bootstrap** → Frontend
-- **MariaDB** → Database
-- **Git & GitHub** → Version control
-
----
-
-## Main Roles
-
-- **Students**
-  - Sign up for an account
-  - Join or leave clubs
-  - View announcements and upcoming events
-
-- **Club Managers**
-  - Manage club profiles and membership
-  - Post announcements & events
-  - Generate and view reports
+## ⚙️ Tech Stack
+- **Laravel** – Framework  
+- **MySQL / MariaDB** – Database  
+- **Bootstrap** – Frontend  
+- **Apache / Laravel Cloud** – Hosting  
+- **Git & GitHub** – Version control  
 
 ---
 
-## Why Duara?
+## 👥 Roles & Features
 
-- The current system is **manual and disorganized**, forcing students to rely on posters and word-of-mouth.
-- There is **no central platform** for discovering or joining clubs.
-- Club managers lack effective tools for **tracking membership and event participation**.
+### Students
+- Create accounts  
+- Join or leave clubs  
+- View events and announcements  
 
-Duara solves these issues by **digitizing the entire process** into a clean, user-friendly system.
+### Club Managers
+- Manage clubs, members, and events  
+- Post announcements  
+- Generate and view reports  
 
 ---
 
-## TODO
+## 🚀 How to Run
 
-- [ ] Setup Database
-- [ ] User login and registration
-- [ ] UI creation
+### Requirements
+- PHP 8.1+  
+- Composer  
+- MySQL or MariaDB  
+- Apache / Laravel Cloud  
+- Git  
 
-## Work done on 29th sept
+### Steps
+```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/duara.git
 
-- Setup project and init files
+# 2. Move into the project directory
+cd duara
 
-## 1st Oct
+# 3. Install dependencies
+composer install
+npm install && npm run build
 
-- Db stuff, need to fix problems with singlestore
+# 4. Copy environment file
+cp .env.example .env
 
-## 2nd Oct
+# 5. Generate app key
+php artisan key:generate
 
-- DB stuff,
-  still need to fix IP issues with singlestore
+# 6. Update .env with your database credentials
+# (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
 
-## 3rd Oct
+# 7. Run migrations
+php artisan migrate
 
-- DB stuff, stopped using singlestore, now using laravel cloud instead
-  Fixed all the database issues, using mysql-client instead of MariaDB, also made the core DB-models of the project
-- still need to deal with ssl/tls certs and all but satisied ith db stuff for now
-- Hosting is also done, using free tier of laravel cloud might deploy later and also has free CI
-
-TODO: Start working on core classes and auth
-
-## 6th oct
-
-- started on the main models and auth
-- Work on registeration page...its broken
-
-## 9th oct
-
-- Finished up on auth stuff everything looks okay and seems to be working
-
-## 11th oct
-
-- CRUD functionality
-  Clubs CRUD
-  Membership management
-  Events CRUD
-  Event registration
-  Resource requests
-
-13th -> TODO fix routing for login and register on the landing page
-
-18th TODO:create Tab for events a user is attending, finish up on the club dashboard(None of the modal pages render)
-Create analytics dashboard for student
-create views for admins
-
-3rd Nov TODO: Fix mailer system, Login and signup flow
+# 8. Start the local development server
+php artisan serve
