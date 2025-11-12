@@ -59,11 +59,10 @@ export default function LandingPage() {
   Stop Searching. Start Connecting.
 </motion.h1>
 
-                       <p className="mt-6 max-w-2xl mx-auto text-center text-xl text-gray-700 dark:text-gray-300">
-  Finding and joining student clubs shouldn’t feel like detective work.
-  Duara makes it simple to discover, join, and grow with communities that match your vibe.
-</p>
-
+                        <p className="mt-6 max-w-2xl text-xl text-gray-700 dark:text-gray-300">
+                            Finding and joining student clubs shouldn’t feel like detective work.
+                            Duara makes it simple to discover, join, and grow with communities that match your vibe.
+                        </p>
                         <div className="mt-8 flex gap-4 justify-center">
                             <Link href={route('register')}>
                                 <Button
