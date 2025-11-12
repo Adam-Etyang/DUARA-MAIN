@@ -16,7 +16,7 @@ export default function Index({ clubs }) {
                         <h1 className="text-4xl font-bold text-black dark:text-white">Manage Clubs</h1>
                         <p className="text-gray-600 dark:text-gray-400 mt-2">Review and manage all clubs in the system</p>
                     </div>
-                    <Link href="/admin">
+                    <Link href={route('admin.dashboard')}>
                         <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
                             Back to Dashboard
                         </Button>

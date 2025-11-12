@@ -12,13 +12,7 @@ use App\Models\Club;
 
 class Student extends Authenticatable implements MustVerifyEmail
 {
-<<<<<<< HEAD
-    use HasFactory;
-
-    use Notifiable;
-=======
     use HasFactory, Notifiable;
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
     protected $table = 'students';
     protected $primaryKey = 'student_id';
 
@@ -60,13 +54,8 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubs()
     {
         return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
-<<<<<<< HEAD
         ->withPivot('role', 'status')
         ->withTimestamps();
-=======
-            ->withPivot('role', 'status')
-            ->withTimestamps();
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
 
     }
     public function events()
@@ -81,22 +70,13 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function isSchoolAdmin()
     {
         return $this->adminRecords()
-<<<<<<< HEAD
-                    ->where('admin_type', 'school_admin')
-                    ->exists();
-=======
             ->where('admin_type', 'school_admin')
             ->exists();
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
     }
     public function isClubAdmin($clubId = null)
     {
         $query = $this->adminRecords()
-<<<<<<< HEAD
-                      ->where('admin_type', 'club_admin');
-=======
             ->where('admin_type', 'club_admin');
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
 
         if ($clubId) {
             $query->where('club_id', $clubId);
@@ -107,15 +87,14 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubsWhereAdmin()
     {
         return $this->adminRecords()
-<<<<<<< HEAD
                     ->where('admin_type', 'club_admin')
                     ->pluck('club_id')
                     ->toArray();
-=======
-            ->where('admin_type', 'club_admin')
-            ->pluck('club_id')
-            ->toArray();
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
+    }
+
+    public function isAdmin()
+    {
+        return $this->adminRecords()->exists();
     }
 
 

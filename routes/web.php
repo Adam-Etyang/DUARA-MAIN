@@ -64,7 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
      Route::get('/clubs/{club}/admin/settings', [ClubAdminController::class, 'settings'])->name('clubs.admin.settings');
 
-<<<<<<< HEAD
     Route::get('/clubs/{club}/admin', [ClubAdminController::class, 'dashboard'])->name('clubs.admin.dashboard');
 
     Route::get('/clubs/{club}/admin', [ClubAdminController::class, 'dashboard'])->name('clubs.admin.dashboard');
@@ -110,7 +109,6 @@ Route::middleware(['auth', 'verified', 'is_school_admin'])->group(function () {
         Route::post('/admin/resources', [AdminController::class, 'storeResource'])->name('admin.resources.store');
         Route::patch('/admin/resources/{id}', [AdminController::class, 'updateResource'])->name('admin.resources.update');
         Route::delete('/admin/resources/{id}', [AdminController::class, 'destroyResource'])->name('admin.resources.destroy');
-=======
 });
 
 Route::middleware(['auth', 'verified', 'is_school_admin'])->group(function () {
@@ -136,7 +134,6 @@ Route::middleware(['auth', 'verified', 'is_school_admin'])->group(function () {
      Route::post('/admin/resources', [AdminController::class, 'storeResource'])->name('admin.resources.store');
      Route::patch('/admin/resources/{id}', [AdminController::class, 'updateResource'])->name('admin.resources.update');
      Route::delete('/admin/resources/{id}', [AdminController::class, 'destroyResource'])->name('admin.resources.destroy');
->>>>>>> eb8e333acf1770547e908d830c5fb123495b7f40
 });
 
 use App\Http\Controllers\TwoFactorController;

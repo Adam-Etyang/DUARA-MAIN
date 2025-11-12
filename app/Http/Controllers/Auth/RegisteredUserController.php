@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Student::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => 'required|in:student,admin',
         ]);
 
         $student = Student::create([
@@ -42,6 +44,14 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // If user registers as admin, create Admin record
+        if ($request->role === 'admin') {
+            Admin::create([
+                'student_id' => $student->student_id,
+                'admin_type' => 'school_admin',
+            ]);
+        }
 
         event(new Registered($student));
 
