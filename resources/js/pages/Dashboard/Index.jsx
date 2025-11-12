@@ -43,7 +43,7 @@ export default function Dashboard() {
                         My Account
                         </Button>
                         </Link>
-                        <Link href="../Clubs/Create">
+                        <Link href={route('clubs.create')}>
                             <Button className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
                                 <Plus className="w-4 h-4 mr-2" />
                                 Request New Club

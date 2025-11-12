@@ -11,11 +11,12 @@ class Club extends Model
 
     protected $primaryKey = 'club_id';
     protected $fillable = [
-    'name',
-    'description',
-    'category',
-    'admin',
-    'status',
+        'name',
+        'description',
+        'category',
+        'admin',
+        'status',
+        'created_by',
     ];
 
     public function events()
@@ -25,14 +26,11 @@ class Club extends Model
     public function members()
     {
         return $this->belongsToMany(Student::class, 'club_memberships', 'club_id', 'student_id')
-                    ->withPivot('role', 'status')
-                    ->withTimestamps();
+            ->withPivot('role', 'status')
+            ->withTimestamps();
     }
     public function admins()
     {
         return $this->belongsTo(Student::class, 'created_by');
     }
-    
-    
-    
 }
