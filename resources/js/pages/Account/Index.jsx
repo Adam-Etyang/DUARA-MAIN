@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import DeleteUserForm from '../Profile/Partials/DeleteUserForm';
 import UpdatePasswordForm from '../Profile/Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from '../Profile/Partials/UpdateProfileInformationForm';
-import { User, Lock, Shield, Trash2, Mail, CheckCircle, XCircle, ArrowLeft, LogOut } from 'lucide-react';
+import { User, Lock, Shield, Trash2, CheckCircle, XCircle, ArrowLeft, LogOut } from 'lucide-react';
 
 export default function Index({ user, mustVerifyEmail, status }) {
     const handleLogout = () => {
@@ -23,7 +23,10 @@ export default function Index({ user, mustVerifyEmail, status }) {
                     {/* Back Button and Logout */}
                     <div className="flex justify-between items-center">
                         <Link href="/dashboard">
-                            <Button variant="ghost" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 -ml-4">
+                            <Button 
+                                variant="ghost" 
+                                className="text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 transition-colors duration-200 -ml-4"
+                            >
                                 <ArrowLeft className="w-4 h-4 mr-2" />
                                 Back to Dashboard
                             </Button>
@@ -31,7 +34,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
                         <Button 
                             onClick={handleLogout}
                             variant="outline"
-                            className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                            className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-yellow-400 dark:hover:bg-yellow-500 transition-colors duration-200"
                         >
                             <LogOut className="w-4 h-4 mr-2" />
                             Logout
@@ -40,7 +43,9 @@ export default function Index({ user, mustVerifyEmail, status }) {
 
                     {/* Header */}
                     <div className="space-y-2">
-                        <h1 className="text-4xl font-bold text-black dark:text-white">Account Settings</h1>
+                        <h1 className="text-4xl font-bold text-yellow-500 dark:text-yellow-400">
+                            Account Settings
+                        </h1>
                         <p className="text-gray-600 dark:text-gray-400">
                             Manage your account information, security settings, and preferences
                         </p>
@@ -48,7 +53,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
 
                     {/* Status Message */}
                     {status && (
-                        <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-black dark:border-white text-black dark:text-white p-4 rounded">
+                        <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-yellow-500 text-black dark:text-white p-4 rounded">
                             {status}
                         </div>
                     )}
@@ -58,13 +63,13 @@ export default function Index({ user, mustVerifyEmail, status }) {
                         <div className="md:col-span-2 space-y-6">
                             <Tabs defaultValue="profile" className="space-y-6">
                                 <TabsList className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                                    <TabsTrigger value="profile" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                                    <TabsTrigger value="profile" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black dark:data-[state=active]:bg-yellow-500 dark:data-[state=active]:text-white">
                                         Profile
                                     </TabsTrigger>
-                                    <TabsTrigger value="security" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                                    <TabsTrigger value="security" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black dark:data-[state=active]:bg-yellow-500 dark:data-[state=active]:text-white">
                                         Security
                                     </TabsTrigger>
-                                    <TabsTrigger value="danger" className="data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black">
+                                    <TabsTrigger value="danger" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black dark:data-[state=active]:bg-yellow-500 dark:data-[state=active]:text-white">
                                         Danger Zone
                                     </TabsTrigger>
                                 </TabsList>
@@ -73,7 +78,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
                                 <TabsContent value="profile" className="space-y-6">
                                     <Card className="border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
                                         <CardHeader>
-                                            <CardTitle className="flex items-center gap-2 text-black dark:text-white">
+                                            <CardTitle className="flex items-center gap-2 text-yellow-500 dark:text-yellow-400">
                                                 <User className="w-5 h-5" />
                                                 Profile Information
                                             </CardTitle>
@@ -94,7 +99,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
                                 <TabsContent value="security" className="space-y-6">
                                     <Card className="border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
                                         <CardHeader>
-                                            <CardTitle className="flex items-center gap-2 text-black dark:text-white">
+                                            <CardTitle className="flex items-center gap-2 text-yellow-500 dark:text-yellow-400">
                                                 <Lock className="w-5 h-5" />
                                                 Update Password
                                             </CardTitle>
@@ -132,7 +137,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
                         <div className="space-y-6">
                             <Card className="border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
                                 <CardHeader>
-                                    <CardTitle className="text-black dark:text-white">Account Overview</CardTitle>
+                                    <CardTitle className="text-yellow-500 dark:text-yellow-400">Account Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="flex items-center gap-3">
@@ -179,7 +184,7 @@ export default function Index({ user, mustVerifyEmail, status }) {
                             {/* Security Info Card */}
                             <Card className="border-2 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-2 text-black dark:text-white text-sm">
+                                    <CardTitle className="flex items-center gap-2 text-yellow-500 dark:text-yellow-400 text-sm">
                                         <Shield className="w-4 h-4" />
                                         Security Tips
                                     </CardTitle>

@@ -35,35 +35,35 @@ export default function VerifyCode({ status }) {
   return (
     <>
       <Head title="Verify Code" />
-      <div className="min-h-screen flex bg-white dark:bg-black">
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+      <div className="min-h-screen flex font-[Poppins] bg-white dark:bg-black">
         {/* Left Side - Branding */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gray-50 dark:bg-gray-950 items-center justify-center p-12">
-          <div className="max-w-md space-y-6">
-            <div className="w-20 h-20 rounded-full bg-black dark:bg-white flex items-center justify-center mb-6">
-              <Shield className="w-10 h-10 text-white dark:text-black" />
+        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12 bg-gray-50 dark:bg-gray-950 bg-cover bg-center"
+             style={{ backgroundImage: "url('/2handstogether.jpg')" }}
+        >
+          <div className="max-w-md space-y-6 bg-black/30 p-6 rounded-md">
+            <div className="w-20 h-20 rounded-full bg-yellow-500 flex items-center justify-center mb-6">
+              <Shield className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl font-bold text-black dark:text-white">Email Verification</h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <h1 className="text-5xl font-bold text-yellow-500">Email Verification</h1>
+            <p className="text-xl text-gray-100">
               We've sent a 6-digit verification code to your email. Enter it below to verify your account and get started.
             </p>
             <div className="pt-6 space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Check your email inbox for the code
-                </p>
+                <div className="w-2 h-2 rounded-full bg-yellow-500 mt-2"></div>
+                <p className="text-gray-100">Check your email inbox for the code</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Code expires in 10 minutes
-                </p>
+                <div className="w-2 h-2 rounded-full bg-yellow-500 mt-2"></div>
+                <p className="text-gray-100">Code expires in 10 minutes</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-black dark:bg-white mt-2"></div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Didn't receive it? You can resend
-                </p>
+                <div className="w-2 h-2 rounded-full bg-yellow-500 mt-2"></div>
+                <p className="text-gray-100">Didn't receive it? You can resend</p>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function VerifyCode({ status }) {
           <div className="w-full max-w-md space-y-8">
             {/* Back Button */}
             <Link href={route('login')}>
-              <Button variant="ghost" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900 -ml-4">
+              <Button variant="ghost" className="text-black dark:text-white hover:bg-yellow-100 dark:hover:bg-yellow-900 -ml-4 transition-colors">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Login
               </Button>
@@ -89,7 +89,7 @@ export default function VerifyCode({ status }) {
 
             {/* Header */}
             <div className="space-y-2 text-center lg:text-left">
-              <h2 className="text-3xl font-bold text-black dark:text-white">Enter Verification Code</h2>
+              <h2 className="text-3xl font-bold text-yellow-500">Enter Verification Code</h2>
               <p className="text-gray-600 dark:text-gray-400">
                 Check your email for the 6-digit verification code
               </p>
@@ -97,7 +97,7 @@ export default function VerifyCode({ status }) {
 
             {/* Status Message */}
             {status && (
-              <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-black dark:border-white text-black dark:text-white p-4 rounded text-sm">
+              <div className="bg-gray-100 dark:bg-gray-900 border-l-4 border-yellow-500 text-black dark:text-white p-4 rounded text-sm">
                 {status}
               </div>
             )}
@@ -105,7 +105,7 @@ export default function VerifyCode({ status }) {
             {/* Verification Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="two_factor_code" className="text-black dark:text-white">
+                <Label htmlFor="two_factor_code" className="text-yellow-500">
                   Verification Code
                 </Label>
                 <Input
@@ -117,7 +117,7 @@ export default function VerifyCode({ status }) {
                   maxLength="6"
                   value={data.two_factor_code}
                   onChange={(e) => setData("two_factor_code", e.target.value.replace(/\D/g, ''))}
-                  className="border-2 border-gray-200 dark:border-gray-800 focus:border-black dark:focus:border-white bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-mono tracking-widest"
+                  className="border-2 border-gray-200 dark:border-gray-800 focus:border-yellow-500 dark:focus:border-yellow-400 bg-white dark:bg-black text-black dark:text-white text-center text-2xl font-mono tracking-widest"
                   placeholder="000000"
                   autoFocus
                   autoComplete="one-time-code"
@@ -138,7 +138,7 @@ export default function VerifyCode({ status }) {
               <Button
                 type="submit"
                 disabled={processing || data.two_factor_code.length !== 6}
-                className="w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 h-11 disabled:opacity-50"
+                className="w-full bg-black text-white hover:bg-yellow-500 dark:bg-white dark:text-black dark:hover:bg-yellow-400 h-11 transition-transform hover:scale-105 disabled:opacity-50"
               >
                 {processing ? (
                   <span className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function VerifyCode({ status }) {
                 )}
               </Button>
 
-              {/* Help Section */}
+              {/* Resend Code */}
               <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                   Didn't receive the code?
@@ -163,7 +163,7 @@ export default function VerifyCode({ status }) {
                   variant="outline"
                   onClick={handleResend}
                   disabled={resending}
-                  className="border-2 border-gray-200 dark:border-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                  className="border-2 border-gray-200 dark:border-gray-800 text-black dark:text-white hover:bg-yellow-100 dark:hover:bg-yellow-900 transition-colors"
                 >
                   {resending ? (
                     <span className="flex items-center gap-2">
