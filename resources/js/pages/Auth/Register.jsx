@@ -10,6 +10,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        role: 'student', // 'student' or 'admin'
     });
 
     const submit = (e) => {
@@ -170,6 +171,44 @@ export default function Register() {
                                     />
                                     {errors.password_confirmation && (
                                         <p className="text-sm text-red-600 dark:text-red-400">{errors.password_confirmation}</p>
+                                    )}
+                                </div>
+
+                                {/* Role Selection */}
+                                <div className="space-y-3 pt-2">
+                                    <Label className="text-yellow-500 dark:text-yellow-400">Account Type</Label>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center">
+                                            <input
+                                                id="role-student"
+                                                type="radio"
+                                                name="role"
+                                                value="student"
+                                                checked={data.role === 'student'}
+                                                onChange={(e) => setData('role', e.target.value)}
+                                                className="w-4 h-4 text-yellow-500 cursor-pointer"
+                                            />
+                                            <Label htmlFor="role-student" className="ml-3 text-gray-700 dark:text-gray-300 cursor-pointer text-sm">
+                                                Student - Browse clubs and attend events
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <input
+                                                id="role-admin"
+                                                type="radio"
+                                                name="role"
+                                                value="admin"
+                                                checked={data.role === 'admin'}
+                                                onChange={(e) => setData('role', e.target.value)}
+                                                className="w-4 h-4 text-yellow-500 cursor-pointer"
+                                            />
+                                            <Label htmlFor="role-admin" className="ml-3 text-gray-700 dark:text-gray-300 cursor-pointer text-sm">
+                                                Administrator - Manage the platform
+                                            </Label>
+                                        </div>
+                                    </div>
+                                    {errors.role && (
+                                        <p className="text-sm text-red-600 dark:text-red-400">{errors.role}</p>
                                     )}
                                 </div>
 

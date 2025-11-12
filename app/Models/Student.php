@@ -54,8 +54,8 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubs()
     {
         return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
-            ->withPivot('role', 'status')
-            ->withTimestamps();
+        ->withPivot('role', 'status')
+        ->withTimestamps();
 
     }
     public function events()
@@ -87,9 +87,14 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubsWhereAdmin()
     {
         return $this->adminRecords()
-            ->where('admin_type', 'club_admin')
-            ->pluck('club_id')
-            ->toArray();
+                    ->where('admin_type', 'club_admin')
+                    ->pluck('club_id')
+                    ->toArray();
+    }
+
+    public function isAdmin()
+    {
+        return $this->adminRecords()->exists();
     }
 
 
