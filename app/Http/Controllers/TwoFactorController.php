@@ -19,27 +19,42 @@ class TwoFactorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['two_factor_code' => 'required|numeric']);
+        $request->validate(['two_factor_code' => 'required|numeric|digits:6']);
 
         $student = Student::find(session('user_id'));
 
         if (!$student) {
-            return redirect()->route('login')->withErrors('User not found.');
+            return back()->withErrors(['two_factor_code' => 'User not found. Please try registering again.']);
         }
 
-        if ($student->two_factor_expires_at->lt(now())) {
-            return redirect()->route('verify.index')->withErrors('The code has expired.');
+        if (!$student->two_factor_expires_at || $student->two_factor_expires_at->lt(now())) {
+            return back()->withErrors(['two_factor_code' => 'The code has expired. Please request a new one.']);
         }
 
         if ($request->two_factor_code != $student->two_factor_code) {
-            return redirect()->route('verify.index')->withErrors('Invalid code.');
+            return back()->withErrors(['two_factor_code' => 'Invalid code. Please check and try again.']);
         }
 
+        // Mark email as verified
         $student->email_verified_at = now();
         $student->resetTwoFactorCode();
+        $student->save();
+
+        // Clear the temporary user_id first
         session()->forget('user_id');
 
-        return redirect()->route('dashboard');
+        // Log the user in with remember token
+        Auth::login($student, true);
+
+        // Regenerate session for security
+        $request->session()->regenerate();
+
+        // Redirect to appropriate dashboard based on role
+        if ($student->isAdmin()) {
+            return redirect()->route('admin.dashboard')->with('success', 'Email verified successfully! Welcome to Duara.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Email verified successfully! Welcome to Duara.');
     }
 
     /**

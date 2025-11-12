@@ -13,6 +13,15 @@ use App\Models\Club;
 class Student extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
+
+    /**
+     * Override to prevent Laravel's default email verification notification
+     * We're using custom 2FA code instead
+     */
+    public function sendEmailVerificationNotification()
+    {
+        // Do nothing - we handle verification with 2FA code
+    }
     protected $table = 'students';
     protected $primaryKey = 'student_id';
 
@@ -54,8 +63,8 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubs()
     {
         return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
-        ->withPivot('role', 'status')
-        ->withTimestamps();
+            ->withPivot('role', 'status')
+            ->withTimestamps();
 
     }
     public function events()
@@ -87,9 +96,9 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubsWhereAdmin()
     {
         return $this->adminRecords()
-                    ->where('admin_type', 'club_admin')
-                    ->pluck('club_id')
-                    ->toArray();
+            ->where('admin_type', 'club_admin')
+            ->pluck('club_id')
+            ->toArray();
     }
 
     public function isAdmin()

@@ -14,12 +14,19 @@ export default function VerifyCode({ status }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post("/verify");
+    post(route('verify.store'), {
+      onSuccess: () => {
+        console.log('Verification successful!');
+      },
+      onError: (errors) => {
+        console.log('Verification errors:', errors);
+      },
+    });
   };
 
   const handleResend = () => {
     setResending(true);
-    router.post('/verify/resend', {}, {
+    router.post(route('verify.resend'), {}, {
       preserveScroll: true,
       onFinish: () => setResending(false)
     });

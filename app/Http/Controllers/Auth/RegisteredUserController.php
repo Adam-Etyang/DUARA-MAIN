@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.Student::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . Student::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => 'required|in:student,admin',
         ]);
@@ -55,6 +55,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($student));
 
-        return redirect()->route('verification.notice');
+        return redirect()->route('verify.index');
     }
 }
