@@ -11,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class TwoFactorCodeMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
     public $code;
-    
 
     /**
      * Create a new message instance.
@@ -41,7 +41,7 @@ class TwoFactorCodeMail extends Mailable
         return new Content(
             view: 'emails.two_factor_code',
             with: [
-            'code'=>$this->code,
+            'code' => $this->code,
             ]
         );
     }

@@ -13,7 +13,7 @@ use App\Models\Club;
 class Student extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
-    
+
     use Notifiable;
     protected $table = 'students';
     protected $primaryKey = 'student_id';
@@ -31,7 +31,7 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function generateTwoFactorCode()
     {
         $this->timestamps = false;
-        $this->two_factor_code = rand(100000,999999);
+        $this->two_factor_code = rand(100000, 999999);
         $this->two_factor_expires_at = Carbon::now()->addMinutes(10);
         $this->save();
     }
@@ -45,9 +45,9 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function clubs()
     {
         return $this->belongsToMany(Club::class, 'club_memberships', 'student_id', 'club_id')
-        ->withPivot('role','status')
+        ->withPivot('role', 'status')
         ->withTimestamps();
-        
+
     }
     public function events()
     {
@@ -56,31 +56,31 @@ class Student extends Authenticatable implements MustVerifyEmail
     }
     public function adminRecords()
     {
-        return $this->hasMany(Admin::class, 'student_id', 'student_id'); 
+        return $this->hasMany(Admin::class, 'student_id', 'student_id');
     }
     public function isSchoolAdmin()
     {
         return $this->adminRecords()
                     ->where('admin_type', 'school_admin')
-                    ->exists(); 
+                    ->exists();
     }
     public function isClubAdmin($clubId = null)
     {
         $query = $this->adminRecords()
                       ->where('admin_type', 'club_admin');
-        
+
         if ($clubId) {
             $query->where('club_id', $clubId);
         }
-        
-        return $query->exists(); 
+
+        return $query->exists();
     }
     public function clubsWhereAdmin()
     {
         return $this->adminRecords()
                     ->where('admin_type', 'club_admin')
                     ->pluck('club_id')
-                    ->toArray(); 
+                    ->toArray();
     }
 
 

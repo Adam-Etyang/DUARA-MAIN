@@ -26,10 +26,10 @@ class AdminController extends Controller
         'pendingRequests' => ResourceRequest::where('status', 'pending')
                                             ->with('event', 'resource')
                                             ->take(10)
-                                            ->get(),     
+                                            ->get(),
 
         ]);
-        
+
     }
 
     public function indexClubs()
@@ -42,14 +42,14 @@ class AdminController extends Controller
         ]);
 
     }
-    
+
     public function showClub(Club $club)
     {
         return inertia('Admin/Club/Show', [
             'club' => $club->load(['members', 'events', 'admins']),
         ]);
     }
-    
+
     public function showEvents(Club $club)
     {
         return inertia('Admin/Club/Events', [
@@ -57,7 +57,7 @@ class AdminController extends Controller
             'events' => $club->events()->withCount('registrations')->get(),
         ]);
     }
-    
+
     public function updateClubStatus(Request $request, Club $club)
     {
         $request->validate([
@@ -150,7 +150,7 @@ class AdminController extends Controller
 
     public function updateResource(Request $request, $resourceId)
     {
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string',
