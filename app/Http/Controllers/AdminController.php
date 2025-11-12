@@ -69,6 +69,13 @@ class AdminController extends Controller
         return redirect()->back()->with('success', "Club status updated to {$request->status}.");
     }
 
+    public function removeClubMember(Club $club, Student $student)
+    {
+        $club->members()->detach($student->student_id);
+
+        return redirect()->back()->with('success', "{$student->name} has been removed from {$club->name}.");
+    }
+
     public function indexEvents()
     {
         return inertia('Admin/Events/Index', [

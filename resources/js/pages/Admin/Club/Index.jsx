@@ -1,4 +1,4 @@
-import { Link, usePage, router } from "@inertiajs/react";
+import { Link, usePage, router, Head } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -63,13 +63,15 @@ export default function Index({ clubs }) {
                                     </div>
 
                                     <div className="flex gap-2 pt-2">
-                                        <Link href={`/admin/clubs/${club.club_id}`} className="flex-1">
-                                            <Button variant="outline" className="w-full border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
-                                                <Eye className="w-4 h-4 mr-2" />
-                                                View Details
-                                            </Button>
-                                        </Link>
-                                        <Button
+                                         <Button 
+                                             variant="outline" 
+                                             className="flex-1 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                                             onClick={() => router.get(`/admin/clubs/${club.club_id}`)}
+                                         >
+                                             <Eye className="w-4 h-4 mr-2" />
+                                             View Details
+                                         </Button>
+                                         <Button
                                             variant="outline"
                                             className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
                                             onClick={() => {

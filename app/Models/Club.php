@@ -15,6 +15,7 @@ class Club extends Model
     'description',
     'category',
     'admin',
+    'status',
     ];
 
     public function events()
