@@ -1,25 +1,33 @@
-import { Link, usePage, router } from "@inertiajs/react";
+import { Link, usePage, router, Head } from "@inertiajs/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Calendar, MapPin, ArrowLeft, Edit } from "lucide-react";
+import { Users, Calendar, MapPin, ArrowLeft, Edit, Trash2 } from "lucide-react";
 
 export default function Show({ club }) {
     const { flash } = usePage().props;
 
+    if (!club) {
+        return <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center"><p>Loading...</p></div>;
+    }
+
     return (
-        <main className="min-h-screen bg-white dark:bg-black">
+        <>
+            <Head title={`${club.name} - Admin`} />
+            <main className="min-h-screen bg-white dark:bg-black">
             <div className="max-w-7xl mx-auto px-6 py-10 space-y-8">
                 {/* Header */}
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/clubs">
-                            <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
-                                <ArrowLeft className="w-4 h-4 mr-2" />
-                                Back to Clubs
-                            </Button>
-                        </Link>
+                         <Button 
+                             variant="outline" 
+                             className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                             onClick={() => router.get(route('admin.clubs.index'))}
+                         >
+                             <ArrowLeft className="w-4 h-4 mr-2" />
+                             Back to Clubs
+                         </Button>
                         <div>
                             <h1 className="text-4xl font-bold text-black dark:text-white">{club.name}</h1>
                             <p className="text-gray-600 dark:text-gray-400 mt-2">Club Details</p>
@@ -30,7 +38,7 @@ export default function Show({ club }) {
                             variant="outline"
                             className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
                             onClick={() => {
-                                router.patch(`/admin/clubs/${club.club_id}/status`, {
+                                router.patch(route('admin.clubs.update-status', club.club_id), {
                                     status: club.status === 'active' ? 'inactive' : 'active'
                                 });
                             }}
@@ -103,20 +111,34 @@ export default function Show({ club }) {
                         {club.members && club.members.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {club.members.map((member) => (
-                                    <Card key={member.student_id} className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
-                                        <CardContent className="p-4">
-                                            <div className="flex justify-between items-center">
-                                                <div>
-                                                    <p className="font-medium text-black dark:text-white">{member.name}</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">{member.email}</p>
-                                                </div>
-                                                <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white">
-                                                    {member.pivot?.role || 'Member'}
-                                                </Badge>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
+                                     <Card key={member.student_id} className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
+                                         <CardContent className="p-4">
+                                             <div className="flex justify-between items-start gap-4">
+                                                 <div className="flex-1">
+                                                     <p className="font-medium text-black dark:text-white">{member.name}</p>
+                                                     <p className="text-sm text-gray-600 dark:text-gray-400">{member.email}</p>
+                                                 </div>
+                                                 <div className="flex items-center gap-2">
+                                                     <Badge variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                                         {member.pivot?.role || 'Member'}
+                                                     </Badge>
+                                                     <Button
+                                                         variant="outline"
+                                                         size="sm"
+                                                         className="border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
+                                                         onClick={() => {
+                                                             if (confirm(`Remove ${member.name} from this club?`)) {
+                                                                 router.delete(route('admin.clubs.remove-member', { club: club.club_id, student: member.student_id }));
+                                                             }
+                                                         }}
+                                                     >
+                                                         <Trash2 className="w-4 h-4" />
+                                                     </Button>
+                                                 </div>
+                                             </div>
+                                         </CardContent>
+                                     </Card>
+                                 ))}
                             </div>
                         ) : (
                             <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950">
@@ -157,12 +179,14 @@ export default function Show({ club }) {
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    <Link href={`/admin/clubs/${club.club_id}/events/${event.event_id}`}>
-                                                        <Button variant="outline" className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
-                                                            View Event
-                                                        </Button>
-                                                    </Link>
-                                                </div>
+                                                     <Button 
+                                                         variant="outline" 
+                                                         className="border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+                                                         onClick={() => router.get(`/admin/clubs/${club.club_id}/events/${event.event_id}`)}
+                                                     >
+                                                         View Event
+                                                     </Button>
+                                                 </div>
                                             </div>
                                         </CardContent>
                                     </Card>
@@ -181,6 +205,7 @@ export default function Show({ club }) {
                     </TabsContent>
                 </Tabs>
             </div>
-        </main>
+            </main>
+        </>
     );
 }

@@ -93,6 +93,8 @@ Route::middleware(['auth', 'verified', 'is_school_admin'])->group(function () {
         Route::get('/admin/clubs/{club}', [AdminController::class, 'showClub'])->name('admin.clubs.show');
         Route::patch('/admin/clubs/{club}/status', [AdminController::class, 'updateClubStatus'])
              ->name('admin.clubs.update-status');
+        Route::delete('/admin/clubs/{club}/members/{student}', [AdminController::class, 'removeClubMember'])
+             ->name('admin.clubs.remove-member');
 
         Route::get('/admin/events', [AdminController::class, 'indexEvents'])->name('admin.events.index');
 

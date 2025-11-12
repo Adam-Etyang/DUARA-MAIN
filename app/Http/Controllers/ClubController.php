@@ -35,12 +35,12 @@ class ClubController extends Controller
         ]);
 
         Club::create([
-            'name' => validated['name'],
-            'description' => validated['description'],
+            'name' => $validated['name'],
+            'description' => $validated['description'],
             'created_by' => auth()->id(),
         ]);
 
-        return redirect()->route('clubs.index')->with('success', 'Club created successfully');
+        return redirect()->route('dashboard')->with('success', 'Club created successfully');
     }
 
     /**
